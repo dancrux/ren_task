@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:ren_task/model/transaction_response.dart';
 import 'package:ren_task/screens/home_screen.dart';
+import 'package:ren_task/screens/transaction_detail_screen.dart';
+import 'package:ren_task/screens/transaction_list.dart';
+import 'package:ren_task/values/app_strings.dart';
+import 'package:ren_task/viewModel/transaction_view_model.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => TransactionViewModel())
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,18 +28,39 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+        textTheme: GoogleFonts.ptSansTextTheme(Theme.of(context).textTheme),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
         primarySwatch: Colors.blue,
       ),
+      onGenerateRoute: _routeFactory(),
       home: const HomeScreen(),
     );
+  }
+
+//  Generates Routes by strings
+  RouteFactory _routeFactory() {
+    return (settings) {
+      Widget screen;
+      switch (settings.name) {
+        case AppStrings.homeRoute:
+          screen = const HomeScreen();
+
+          break;
+        case AppStrings.transactionDetailRoute:
+          screen = TransactionDetailScreen(
+            transactionResponse: settings.arguments as ClientTransaction,
+          );
+
+          break;
+        case AppStrings.transactionRoute:
+          screen = const TransactionScreen();
+
+          break;
+
+        default:
+          return null;
+      }
+      return MaterialPageRoute(builder: (BuildContext context) => screen);
+    };
   }
 }

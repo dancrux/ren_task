@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ren_task">
+     <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="ren_task"
         android:name="${applicationName}"
