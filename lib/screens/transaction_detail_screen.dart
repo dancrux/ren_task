@@ -102,11 +102,13 @@ class TransactionDetailScreen extends StatelessWidget {
                               ),
                               SizedBox(
                                   width: scaler.sizer.setAdjustedWidth(1.5)),
-                              Text(
-                                transactionResponse.type,
-                                style: AppStyles.descTextBlack.copyWith(
-                                    fontSize: scaler.fontSizer.sp(55),
-                                    color: AppColors.textGreen),
+                              Expanded(
+                                child: Text(
+                                  transactionResponse.type,
+                                  style: AppStyles.descTextBlack.copyWith(
+                                      fontSize: scaler.fontSizer.sp(55),
+                                      color: AppColors.textGreen),
+                                ),
                               ),
                             ],
                           ),
